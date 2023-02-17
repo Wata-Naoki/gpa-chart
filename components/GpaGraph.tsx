@@ -1,5 +1,6 @@
+import { useHandleData } from "@/hooks/useHandleData";
+import { Gpa } from "@/types/type";
 import React from "react";
-
 import {
   Radar,
   RadarChart,
@@ -9,51 +10,10 @@ import {
   PolarRadiusAxis,
 } from "recharts";
 
-type Gpa = {
-  subject: string;
-  A: number;
-  B?: number;
-  fullMark: number;
-};
-
 // TODO: コンポーネントを分ける
 export const GpaGraph = () => {
-  // mock
-  // const data = [
-  //   { subject: "数学", A: 120, B: 110, fullMark: 150 },
-  //   { subject: "中国語", A: 98, B: 130, fullMark: 150 },
-  //   { subject: "英語", A: 86, B: 130, fullMark: 150 },
-  //   { subject: "地理", A: 99, B: 100, fullMark: 150 },
-  //   { subject: "化学", A: 85, B: 90, fullMark: 150 },
-  //   { subject: "歴史", A: 65, B: 85, fullMark: 150 },
-  // ];
-
-  const [data, setData] = React.useState<Gpa[]>([
-    { subject: "数学", A: 120, B: 110, fullMark: 150 },
-  ]);
-  const [count, setCount] = React.useState<number>(1);
-  const subjectRef = React.useRef<HTMLInputElement>(null);
-  const scoreRef = React.useRef<HTMLInputElement>(null);
-  const handleCount = () => {
-    setCount((prev) => prev + 1);
-    const subject = subjectRef.current?.value;
-    const score = scoreRef.current?.value;
-    if (subject && score) {
-      setData((prev) => [
-        ...prev,
-        {
-          subject: subject,
-          A: Number(score),
-          fullMark: 150,
-        },
-      ]);
-    }
-  };
-  const handleDelete = () => {
-    setCount((prev) => prev - 1);
-    // ここでdataの最後の要素を削除する
-    setData((prev) => prev.slice(0, -1));
-  };
+  const { data, count, subjectRef, scoreRef, handleCount, handleDelete } =
+    useHandleData();
 
   return (
     <div>
