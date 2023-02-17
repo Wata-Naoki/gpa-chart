@@ -1,5 +1,6 @@
+import { useHandleData } from "@/hooks/useHandleData";
+import { Gpa } from "@/types/type";
 import React from "react";
-
 import {
   Radar,
   RadarChart,
@@ -9,68 +10,40 @@ import {
   PolarRadiusAxis,
 } from "recharts";
 
-type Gpa = {
-  subject: string;
-  A: number;
-  B?: number;
-  fullMark: number;
-};
-
+// TODO: コンポーネントを分ける
 export const GpaGraph = () => {
-  const data = [
-    { subject: "数学", A: 120, B: 110, fullMark: 150 },
-    { subject: "中国語", A: 98, B: 130, fullMark: 150 },
-    { subject: "英語", A: 86, B: 130, fullMark: 150 },
-    { subject: "地理", A: 99, B: 100, fullMark: 150 },
-    { subject: "化学", A: 85, B: 90, fullMark: 150 },
-    { subject: "歴史", A: 65, B: 85, fullMark: 150 },
-  ];
-
-  const [gpa, setGpa] = React.useState<Gpa[]>([
-    { subject: "数学", A: 120, B: 110, fullMark: 150 },
-  ]);
-  const [count, setCount] = React.useState<number>(1);
-  const handleCount = () => {
-    setCount((prev) => prev + 1);
-  };
-  const handleDelete = () => {
-    setCount((prev) => prev - 1);
-  };
+  const { data, count, subjectRef, scoreRef, handleCount, handleDelete } =
+    useHandleData();
 
   return (
     <div>
       <div className="my-10">
-        <button
-          className="px-4 py-2 mb-5 text-xl text-white bg-green-700 rounded"
-          onClick={handleCount}
-        >
-          データ追加
-        </button>
-        <button
-          className="px-4 py-2 mb-5 text-xl text-white bg-green-700 rounded"
-          onClick={handleCount}
-        >
-          科目追加
-        </button>
-        <button
-          className="px-4 py-2 mb-5 text-xl text-white bg-red-700 rounded"
-          onClick={handleDelete}
-        >
-          削除
-        </button>
-        <div>
-          {[...Array(count)].map((_, i) => (
-            <div key={i} className="flex">
-              <div>科目名；</div>
-              <input type="text" className="border-2" />
-              <div>点数；</div>
-              <input type="text" className="border-2" />
-            </div>
-          ))}
+        <div className="flex gap-2">
+          <button
+            className="px-4 py-2 mb-5 text-xl text-white bg-green-700 rounded "
+            onClick={handleCount}
+          >
+            追加
+          </button>
+          <button
+            className="px-4 py-2 mb-5 text-xl text-white bg-red-700 rounded disabled:cursor-not-allowed"
+            onClick={handleDelete}
+            disabled={data.length === 0}
+          >
+            削除
+          </button>
         </div>
         <div>
-          {gpa &&
-            gpa.map((val: any, index: number) => (
+          <div className="flex">
+            <div>科目名；</div>
+            <input type="text" className="border-2" ref={subjectRef} />
+            <div>点数；</div>
+            <input type="text" className="border-2" ref={scoreRef} />
+          </div>
+        </div>
+        <div>
+          {data &&
+            data.map((val: any, index: number) => (
               <div key={index} className="flex">
                 <div>{val.subject}</div>
                 <div>{val.A}</div>
