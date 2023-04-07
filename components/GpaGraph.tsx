@@ -9,6 +9,7 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
+import { CloseButton, Group } from "@mantine/core";
 
 // TODO: コンポーネントを分ける
 export const GpaGraph = () => {
@@ -25,13 +26,13 @@ export const GpaGraph = () => {
           >
             追加
           </button>
-          <button
+          {/* <button
             className="px-4 py-2 mb-5 text-xl text-white bg-red-700 rounded disabled:cursor-not-allowed"
             onClick={handleDelete}
             disabled={data.length === 0}
           >
             削除
-          </button>
+          </button> */}
         </div>
         <div>
           <div className="flex">
@@ -41,12 +42,18 @@ export const GpaGraph = () => {
             <input type="text" className="border-2" ref={scoreRef} />
           </div>
         </div>
-        <div>
+        <div className="flex flex-col gap-y-4 justify-center mt-4">
           {data &&
             data.map((val: any, index: number) => (
-              <div key={index} className="flex">
+              <div key={index} className="flex items-center gap-y-4">
                 <div>{val.subject}</div>
                 <div>{val.A}</div>
+                <Group position="center" className="pt-0.5 ml-2 ">
+                  <CloseButton
+                    aria-label="Close modal"
+                    onClick={handleDelete}
+                  />
+                </Group>
               </div>
             ))}
         </div>
